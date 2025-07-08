@@ -6,18 +6,36 @@ var args = require("minimist")(process.argv.splice(2), {
         boolean: ["help"], string: ["file"]
     }
 );
+
+
 console.log("Args: ", args);
 //console.log(process.argv.slice(2));
 
 
+if (args.help) {
+    printHelp();
+}
+else if (args.file) {
+    console.log("File: ", args.file);
+}
+else {
+    error("Incorrect usage", true);
+}
 
-printHelp();
+function error(msg, includeHelp = false) {
+    console.error(msg);
+    if (includeHelp) {
+        console.error("");
+        printHelp();
+    }
+}
 
 function printHelp() {
     console.log("ex3 usuage:");
     console.log("  ex3.js --help");
     console.log("");
     console.log("--help         print this help");
+    console.log("--file={FILENAME}         print this help");
     console.log("");
 }
 
