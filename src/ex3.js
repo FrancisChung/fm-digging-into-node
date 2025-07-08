@@ -2,6 +2,9 @@
 
 "use strict";
 
+console.log(process.argv.slice(2));
+
+
 printHelp();
 
 function printHelp() {
@@ -11,3 +14,5 @@ function printHelp() {
     console.log("--help         print this help");
     console.log("");
 }
+
+//./ex3.js --hello=world
