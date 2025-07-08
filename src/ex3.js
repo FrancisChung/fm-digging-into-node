@@ -2,7 +2,10 @@
 
 "use strict";
 
-console.log(process.argv.slice(2));
+var args = require("minimist")(process.argv.splice(2));
+console.log("Args: ", args);
+//console.log(process.argv.slice(2));
+
 
 
 printHelp();
@@ -16,3 +19,6 @@ function printHelp() {
 }
 
 //./ex3.js --hello=world
+//./ex3.js --hello=world -c9 - foobar
+// Args:  { _: [ '-', 'foobar' ], hello: 'world', c: 9 }
+// first part above is called the overflow, parts minimist doesn't know how to handle
