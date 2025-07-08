@@ -2,6 +2,8 @@
 
 "use strict";
 
+var path = require("path");
+
 var args = require("minimist")(process.argv.splice(2), {
         boolean: ["help"], string: ["file"]
     }
@@ -16,7 +18,9 @@ if (args.help) {
     printHelp();
 }
 else if (args.file) {
-    console.log("File: ", args.file);
+    let filePath = path.resolve(args.file);
+    console.log("dir: ", __dirname);
+    console.log("filePath: ", filePath);
 }
 else {
     error("Incorrect usage", true);
