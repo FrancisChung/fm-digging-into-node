@@ -46,9 +46,15 @@ function printHelp() {
 
 function processFile(filepath) {
     //var contents = fs.readFileSync(filepath);
-    var contents = fs.readFileSync(filepath, "utf8");
-    console.log(contents);
-    //process.stdout.write(contents);
+    fs.readFile(filepath, function onContents(err, contents) {
+        if (err) {
+            error(err.toString());
+        }
+        else {
+            process.stdout.write(contents);
+        }
+        //console.log(contents);
+    });
 }
 
 //./ex3.js --hello=world
