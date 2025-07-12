@@ -13,6 +13,10 @@ var args = minimist(process.argv.splice(2), {
         boolean: ["help", "in"], string: ["file"]
     });
 
+var BASE_PATH = path.resolve(
+    process.env.BASE_PATH || __dirname
+);
+
 if (process.env.HELLO) {
     console.log(process.env.HELLO)
 }
@@ -29,7 +33,7 @@ else if (args.in || args._.includes("-") ) {
 }
 else if (args.file) {
     //var contents = fs.readFileSync(filepath);
-    fs.readFile(args.file, function onContents(err, contents) {
+    fs.readFile(path.join(BASE_PATH, args.file), function onContents(err, contents) {
         if (err) {
             error(err.toString());
         }
