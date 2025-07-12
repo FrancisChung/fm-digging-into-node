@@ -13,9 +13,12 @@ var args = minimist(process.argv.splice(2), {
         boolean: ["help", "in"], string: ["file"]
     });
 
+if (process.env.HELLO) {
+    console.log(process.env.HELLO)
+}
+
 
 console.log("Args: ", args);
-//console.log(process.argv.slice(2));
 
 
 if (args.help) {
@@ -53,7 +56,7 @@ function error(msg, includeHelp = false) {
 }
 
 function printHelp() {
-    console.log("ex3 usuage:");
+    console.log("ex3 usage:");
     console.log("  ex3.js --help");
     console.log("");
     console.log("--help                    print this help");
