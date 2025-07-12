@@ -2,15 +2,16 @@
 
 "use strict";
 
-var util = require("util");
-var path = require("path");
-var fs = require("fs");
-var getStdin = import("get-stdin");
+import * as util from 'util';
+import * as path from 'path';
+import * as fs from 'fs';
+import getStdin from "get-stdin";
+//import * as minimist from 'minimist';
+import minimist from 'minimist';
 
-var args = require("minimist")(process.argv.splice(2), {
+var args = minimist(process.argv.splice(2), {
         boolean: ["help", "in"], string: ["file"]
-    }
-);
+    });
 
 
 console.log("Args: ", args);
