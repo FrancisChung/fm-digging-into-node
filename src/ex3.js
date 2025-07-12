@@ -2,10 +2,13 @@
 
 "use strict";
 
+var util = require("util");
 var path = require("path");
 var fs = require("fs");
+var getStdin = import("get-stdin");
+
 var args = require("minimist")(process.argv.splice(2), {
-        boolean: ["help"], string: ["file"]
+        boolean: ["help", "in"], string: ["file"]
     }
 );
 
@@ -17,14 +20,27 @@ console.log("Args: ", args);
 if (args.help) {
     printHelp();
 }
+else if (args.in || args._.includes("-") ) {
+    getStdin().then(processFile).catch(error);
+}
 else if (args.file) {
-    let filePath = path.resolve(args.file);
-    console.log("dir: ", __dirname);
-    console.log("filePath: ", filePath);
-    processFile(filePath);
+    //var contents = fs.readFileSync(filepath);
+    fs.readFile(args.file, function onContents(err, contents) {
+        if (err) {
+            error(err.toString());
+        }
+        else {
+            processFile(contents.toString());
+        }
+    });
 }
 else {
     error("Incorrect usage", true);
+}
+
+function processFile(contents) {
+    contents = contents.toUpperCase();
+    process.stdout.write(contents);
 }
 
 function error(msg, includeHelp = false) {
@@ -39,24 +55,12 @@ function printHelp() {
     console.log("ex3 usuage:");
     console.log("  ex3.js --help");
     console.log("");
-    console.log("--help         print this help");
-    console.log("--file={FILENAME}         print this help");
+    console.log("--help                    print this help");
+    console.log("--file={FILENAME}         process the file");
+    console.log("--in=, -                  process stdin");
     console.log("");
 }
 
-function processFile(filepath) {
-    //var contents = fs.readFileSync(filepath);
-    fs.readFile(filepath, function onContents(err, contents) {
-        if (err) {
-            error(err.toString());
-        }
-        else {
-            contents = contents.toString().toUpperCase();
-            process.stdout.write(contents);
-        }
-        //console.log(contents);
-    });
-}
 
 //./ex3.js --hello=world
 //./ex3.js --hello=world -c9 - foobar
