@@ -2,14 +2,21 @@
 
 "use strict";
 
-import * as util from 'util';
-import * as path from 'path';
-import * as fs from 'fs';
+//import * as util from 'util';
+//import * as path from 'path';
+//import * as fs from 'fs';
+
+//import path from 'path';
+
+//import fs from 'fs';
+
+const fs = require("fs");
+const path = require("node:path");
 
 //import * as minimist from 'minimist';
-import minimist from 'minimist';
+//import minimist from 'minimist';
 
-var args = minimist(process.argv.splice(2), {
+var args = require("minimist")(process.argv.splice(2), {
         boolean: ["help", "in"], string: ["file"]
     });
 
@@ -43,7 +50,7 @@ function processFile(inStream) {
     var outStream = inStream;
     var targetStream = process.stdout;
 
-    outStream.oipe(targetStream);
+    outStream.pipe(targetStream);
 }
 
 function error(msg, includeHelp = false) {
