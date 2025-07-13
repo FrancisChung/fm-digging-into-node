@@ -5,7 +5,7 @@
 import * as util from 'util';
 import * as path from 'path';
 import * as fs from 'fs';
-import getStdin from "get-stdin";
+
 //import * as minimist from 'minimist';
 import minimist from 'minimist';
 
@@ -29,26 +29,21 @@ if (args.help) {
     printHelp();
 }
 else if (args.in || args._.includes("-") ) {
-    getStdin().then(processFile).catch(error);
+    processFile(process.stdin);
 }
 else if (args.file) {
-    //var contents = fs.readFileSync(filepath);
-    fs.readFile(path.join(BASE_PATH, args.file), function onContents(err, contents) {
-        if (err) {
-            error(err.toString());
-        }
-        else {
-            processFile(contents.toString());
-        }
-    });
+    let stream = fs.createReadStream(path.join(BASE_PATH, args.file));
+    processFile(stream);
 }
 else {
     error("Incorrect usage", true);
 }
 
-function processFile(contents) {
-    contents = contents.toUpperCase();
-    process.stdout.write(contents);
+function processFile(inStream) {
+    var outStream = inStream;
+    var targetStream = process.stdout;
+
+    outStream.oipe(targetStream);
 }
 
 function error(msg, includeHelp = false) {
