@@ -18,12 +18,15 @@ var Transform = require("stream").Transform;
 //import minimist from 'minimist';
 
 var args = require("minimist")(process.argv.splice(2), {
-        boolean: ["help", "in"], string: ["file"]
+        boolean: ["help", "in", "out"], string: ["file"]
     });
 
 var BASE_PATH = path.resolve(
     process.env.BASE_PATH || __dirname
 );
+
+var OUTFILE = path.join(BASE_PATH, "out.txt");
+
 
 if (process.env.HELLO) {
     console.log(process.env.HELLO)
@@ -60,7 +63,13 @@ function processFile(inStream) {
     outStream = outStream.pipe(upperStream);
 
 
-    var targetStream = process.stdout;
+    var targetStream;
+    if (args.out) {
+        targetStream = process.stdout;
+    }
+    else {
+        targetStream = fs.createWriteStream(OUTFILE);
+    }
 
     outStream.pipe(targetStream);
 }
