@@ -88,7 +88,8 @@ function printHelp() {
     console.log("");
     console.log("--help                    print this help");
     console.log("--file={FILENAME}         process the file");
-    console.log("--in=, -                  process stdin");
+    console.log("--in, -                   process stdin");
+    console.log("--out, -                  process stdout");
     console.log("");
 }
 
