@@ -47,7 +47,18 @@ else {
 }
 
 function processFile(inStream) {
-    var outStream = inStream;
+    var outStream;
+
+    var upperStream = new Transform({
+        transform(chunk, enc, cb) {
+            this.push(chunk.toString().toLowerCase());
+            cb();
+        }
+    });
+
+    outStream = outStream.pipe(outStream);
+
+
     var targetStream = process.stdout;
 
     outStream.pipe(targetStream);
