@@ -13,12 +13,13 @@
 const fs = require("fs");
 const path = require("node:path");
 var Transform = require("stream").Transform;
+var zlib = require("zlib");
 
 //import * as minimist from 'minimist';
 //import minimist from 'minimist';
 
 var args = require("minimist")(process.argv.splice(2), {
-        boolean: ["help", "in", "out"], string: ["file"]
+        boolean: ["help", "in", "out", "compress"], string: ["file"]
     });
 
 var BASE_PATH = path.resolve(
@@ -62,6 +63,12 @@ function processFile(inStream) {
 
     outStream = outStream.pipe(upperStream);
 
+    if (args.compress) {
+        let gzipStream = zlib.createGzip();
+        outStream = outStream.pipe(gzipStream);
+        OUTFILE = `${OUTFILE}.gz`
+        //OUTFILE = ${OUTFILE};
+    }
 
     var targetStream;
     if (args.out) {
@@ -90,6 +97,7 @@ function printHelp() {
     console.log("--file={FILENAME}         process the file");
     console.log("--in, -                   process stdin");
     console.log("--out, -                  process stdout");
+    console.log("--compress,               gzip the output");
     console.log("");
 }
 
