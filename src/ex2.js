@@ -12,6 +12,7 @@
 
 const fs = require("fs");
 const path = require("node:path");
+var Transform = require("stream").Transform;
 
 //import * as minimist from 'minimist';
 //import minimist from 'minimist';
@@ -47,16 +48,16 @@ else {
 }
 
 function processFile(inStream) {
-    var outStream;
+    var outStream = inStream;
 
     var upperStream = new Transform({
         transform(chunk, enc, cb) {
-            this.push(chunk.toString().toLowerCase());
+            this.push(chunk.toString().toUpperCase());
             cb();
         }
     });
 
-    outStream = outStream.pipe(outStream);
+    outStream = outStream.pipe(upperStream);
 
 
     var targetStream = process.stdout;
