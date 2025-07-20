@@ -19,7 +19,7 @@ var zlib = require("zlib");
 //import minimist from 'minimist';
 
 var args = require("minimist")(process.argv.splice(2), {
-        boolean: ["help", "in", "out", "compress"], string: ["file"]
+        boolean: ["help", "in", "out", "compress", "uncompress"], string: ["file"]
     });
 
 var BASE_PATH = path.resolve(
@@ -53,6 +53,11 @@ else {
 
 function processFile(inStream) {
     var outStream = inStream;
+
+    if (args.uncompress) {
+        let gunzipStream = zlib.createGunzip();
+        outStream = outStream.pipe(gunzipStream);
+    }
 
     var upperStream = new Transform({
         transform(chunk, enc, cb) {
