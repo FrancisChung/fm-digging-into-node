@@ -33,9 +33,7 @@ if (process.env.HELLO) {
     console.log(process.env.HELLO)
 }
 
-
 console.log("Args: ", args);
-
 
 if (args.help) {
     printHelp();
@@ -90,6 +88,14 @@ async function processFile(inStream) {
     }
 
     outStream.pipe(targetStream);
+
+    await streamComplete(outStream);
+}
+
+function streamComplete(stream) {
+    return new Promise(function c(res) {
+        stream.on("end", res);
+    });
 }
 
 function error(msg, includeHelp = false) {
