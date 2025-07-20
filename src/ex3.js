@@ -2,20 +2,32 @@
 
 "use strict";
 
-import * as util from 'util';
-import * as path from 'path';
-import * as fs from 'fs';
-import getStdin from "get-stdin";
-//import * as minimist from 'minimist';
-import minimist from 'minimist';
+//import * as util from 'util';
+//import * as path from 'path';
+//import * as fs from 'fs';
 
-var args = minimist(process.argv.splice(2), {
-        boolean: ["help", "in"], string: ["file"]
+//import path from 'path';
+
+//import fs from 'fs';
+
+const fs = require("fs");
+const path = require("node:path");
+var Transform = require("stream").Transform;
+var zlib = require("zlib");
+
+//import * as minimist from 'minimist';
+//import minimist from 'minimist';
+
+var args = require("minimist")(process.argv.splice(2), {
+        boolean: ["help", "in", "out", "compress", "uncompress"], string: ["file"]
     });
 
 var BASE_PATH = path.resolve(
     process.env.BASE_PATH || __dirname
 );
+
+var OUTFILE = path.join(BASE_PATH, "out.txt");
+
 
 if (process.env.HELLO) {
     console.log(process.env.HELLO)
@@ -29,26 +41,49 @@ if (args.help) {
     printHelp();
 }
 else if (args.in || args._.includes("-") ) {
-    getStdin().then(processFile).catch(error);
+    processFile(process.stdin);
 }
 else if (args.file) {
-    //var contents = fs.readFileSync(filepath);
-    fs.readFile(path.join(BASE_PATH, args.file), function onContents(err, contents) {
-        if (err) {
-            error(err.toString());
-        }
-        else {
-            processFile(contents.toString());
-        }
-    });
+    let stream = fs.createReadStream(path.join(BASE_PATH, args.file));
+    processFile(stream);
 }
 else {
     error("Incorrect usage", true);
 }
 
-function processFile(contents) {
-    contents = contents.toUpperCase();
-    process.stdout.write(contents);
+function processFile(inStream) {
+    var outStream = inStream;
+
+    if (args.uncompress) {
+        let gunzipStream = zlib.createGunzip();
+        outStream = outStream.pipe(gunzipStream);
+    }
+
+    var upperStream = new Transform({
+        transform(chunk, enc, cb) {
+            this.push(chunk.toString().toUpperCase());
+            cb();
+        }
+    });
+
+    outStream = outStream.pipe(upperStream);
+
+    if (args.compress) {
+        let gzipStream = zlib.createGzip();
+        outStream = outStream.pipe(gzipStream);
+        OUTFILE = `${OUTFILE}.gz`
+        //OUTFILE = ${OUTFILE};
+    }
+
+    var targetStream;
+    if (args.out) {
+        targetStream = process.stdout;
+    }
+    else {
+        targetStream = fs.createWriteStream(OUTFILE);
+    }
+
+    outStream.pipe(targetStream);
 }
 
 function error(msg, includeHelp = false) {
@@ -60,12 +95,15 @@ function error(msg, includeHelp = false) {
 }
 
 function printHelp() {
-    console.log("ex3 usage:");
-    console.log("  ex3.js --help");
+    console.log("ex2 usage:");
+    console.log("  ex2.js --help");
     console.log("");
     console.log("--help                    print this help");
     console.log("--file={FILENAME}         process the file");
-    console.log("--in=, -                  process stdin");
+    console.log("--in, -                   process stdin");
+    console.log("--out, -                  process stdout");
+    console.log("--compress,               gzip the output");
+    console.log("--uncompress,             un-gzip the input");
     console.log("");
 }
 
