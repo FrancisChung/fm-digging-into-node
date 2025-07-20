@@ -98,6 +98,7 @@ function printHelp() {
     console.log("--in, -                   process stdin");
     console.log("--out, -                  process stdout");
     console.log("--compress,               gzip the output");
+    console.log("--uncompress,             un-gzip the input");
     console.log("");
 }
 
