@@ -95,8 +95,8 @@ function error(msg, includeHelp = false) {
 }
 
 function printHelp() {
-    console.log("ex2 usage:");
-    console.log("  ex2.js --help");
+    console.log("ex3 usage:");
+    console.log("  ex3.js --help");
     console.log("");
     console.log("--help                    print this help");
     console.log("--file={FILENAME}         process the file");
