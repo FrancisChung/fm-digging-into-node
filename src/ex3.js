@@ -96,6 +96,11 @@ function *processFile(signal, inStream) {
 
     outStream.pipe(targetStream);
 
+    signal.pr.catch(function f() {
+        outStream.unpipe(targetStream);
+        outStream.destroy();
+    })
+
     yield streamComplete(outStream);
 }
 
