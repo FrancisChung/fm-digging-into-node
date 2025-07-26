@@ -14,6 +14,7 @@ const fs = require("fs");
 const path = require("node:path");
 var Transform = require("stream").Transform;
 var zlib = require("zlib");
+var CAF = require("caf");
 
 //import * as minimist from 'minimist';
 //import minimist from 'minimist';
@@ -21,6 +22,8 @@ var zlib = require("zlib");
 var args = require("minimist")(process.argv.splice(2), {
         boolean: ["help", "in", "out", "compress", "uncompress"], string: ["file"]
     });
+
+processFile = CAF(processFile);
 
 var BASE_PATH = path.resolve(
     process.env.BASE_PATH || __dirname
@@ -39,12 +42,16 @@ if (args.help) {
     printHelp();
 }
 else if (args.in || args._.includes("-") ) {
-    processFile(process.stdin)
+    let tooLong = CAF.timeout(3, "Took too long");
+    processFile(tooLong, process.stdin)
         .catch(error);
 }
 else if (args.file) {
     let stream = fs.createReadStream(path.join(BASE_PATH, args.file));
-    processFile(stream)
+
+    let tooLong = CAF.timeout(3, "Took too long");
+
+    processFile(tooLong, stream)
         .then(function() {
             console.log("Complete!");
         })
@@ -55,7 +62,7 @@ else {
     error("Incorrect usage", true);
 }
 
-async function processFile(inStream) {
+function *processFile(signal, inStream) {
     var outStream = inStream;
 
     if (args.uncompress) {
@@ -89,7 +96,7 @@ async function processFile(inStream) {
 
     outStream.pipe(targetStream);
 
-    await streamComplete(outStream);
+    yield streamComplete(outStream);
 }
 
 function streamComplete(stream) {
