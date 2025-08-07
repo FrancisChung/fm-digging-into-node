@@ -49,15 +49,18 @@ async function main() {
 	};
 
 	var initSQL = fs.readFileSync(DB_SQL_PATH,"utf-8");
-	// TODO: initialize the DB structure
+    await SQ3L.exec(initSQL);
 
 
 	var other = args.other;
 	var something = Math.trunc(Math.random() * 1E9);
 
 	// ***********
-
-	// TODO: insert values and print all records
+    var otherId = await insertOrLookupOther(other);
+    if (otherId) {
+        // TODO do some other work
+        return;
+    }
 
 	error("Oops!");
 }
@@ -67,4 +70,34 @@ function error(err) {
 		console.error(err.toString());
 		console.log("");
 	}
+}
+
+async function insertOrLookupOther(other) {
+    var result = await SQL3.get(
+        `SELECT
+            id
+        FROM
+            Other
+        WHERE
+            data = ?
+        `,
+        other
+    );
+
+    if (result && result.id) {
+        return result.id;
+    }
+    else {
+        resut = await SQL3.run(`
+            INSERT INTO
+                Other (data)
+            VALUES
+                ?
+            `
+        );
+        if (result && result.lastID) {
+            return result.lastID;
+        }
+    }
+
 }
