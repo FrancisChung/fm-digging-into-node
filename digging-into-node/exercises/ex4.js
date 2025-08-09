@@ -58,8 +58,10 @@ async function main() {
 	// ***********
     var otherId = await insertOrLookupOther(other);
     if (otherId) {
-        // TODO do some other work
-        return;
+        let result = await insertSomething(otherId, something);
+        if (result) {
+            return;
+        }
     }
 
 	error("Oops!");
@@ -88,7 +90,7 @@ async function insertOrLookupOther(other) {
         return result.id;
     }
     else {
-        resut = await SQL3.run(`
+        result = await SQL3.run(`
             INSERT INTO
                 Other (data)
             VALUES
@@ -100,4 +102,18 @@ async function insertOrLookupOther(other) {
         }
     }
 
+}
+
+async function insertSomething(otherId, something) {
+    var result = await SQL3.run(`
+            INSERT INTO
+                Other (data)
+            VALUES
+                ?
+            where id = (otherId)
+            `
+    );
+
+    if (result)
+        return result;
 }
