@@ -57,16 +57,18 @@ async function main() {
 
     // ***********
     var otherId = await getOrInsertOtherID(other)
+    console.log('otherId', otherId);
     //var otherId = await insertOrLookupOther(other);
     if (otherId) {
-        // let result = await insertSomething(otherId, something);
-        // if (result) {
-        //     console.log("Successfully inserted!");
-        //     return;
-        // }
+        let result = await insertSomething(otherId, something);
+        if (result) {
+            var records = await
+            console.log("Successfully inserted!");
+            return;
+        }
     }
 
-    error("Oops!");
+    error("Something went wrong!");
 }
 
 function error(err) {
@@ -154,6 +156,10 @@ async function insertSomething(otherId, something) {
         otherId,
         something
     );
+
+    console.log('result', result);
+    console.log('result.changes', result.changes);
+
 
     if (result && result.changes > 0)
         return true;
