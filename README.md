@@ -5,3 +5,7 @@ Node.js has taken the JavaScript world by storm, but where do you start when all
 
 ![image](https://github.com/user-attachments/assets/298ac327-69ec-4ce7-95e6-c16d2fb3c08b)
 
+### Notes
+
+1. use src/
+2. sqlite3 errors - npm install sqlite3@latest
