@@ -62,7 +62,11 @@ async function main() {
     if (otherId) {
         let result = await insertSomething(otherId, something);
         if (result) {
-            console.log("Successfully inserted!");
+            var records = await getAllRecords();
+            if (records && records.length > 0) {
+                console.log("Records", records);
+                console.table(records);
+            }
             return;
         }
     }
@@ -164,4 +168,22 @@ async function insertSomething(otherId, something) {
         return true;
 
     return false;
+}
+
+async function  getAllRecords() {
+    var result = await SQL3.all(
+        `
+        SELECT
+            other.data as 'other',
+            Something.data as 'something'
+        FROM
+            Something join Other
+        ON (Something.otherID = Other.id)
+        ORDER BY
+            Other.id DESC, Something.data ASC
+        `
+    );
+    if (result && result.length > 0) {
+        return result;
+    }
 }
