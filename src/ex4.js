@@ -56,19 +56,18 @@ async function main() {
     var something = Math.trunc(Math.random() * 1E9);
 
     // ***********
-    var otherId = await getOrInsertOtherID(other)
-    console.log('otherId', otherId);
-    //var otherId = await insertOrLookupOther(other);
+    //var otherId = await getOrInsertOtherID(other)
+    var otherId = await insertOrLookupOther(other);
+    console.log("OtherId:", otherId);
     if (otherId) {
         let result = await insertSomething(otherId, something);
         if (result) {
-            var records = await
             console.log("Successfully inserted!");
             return;
         }
     }
 
-    error("Something went wrong!");
+    error("Oops!");
 }
 
 function error(err) {
