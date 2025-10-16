@@ -140,3 +140,6 @@ vite.config.ts.timestamp-*
 .idea/
 out.txt
 /src/out.txt.gz
+
+# Course files
+my.db
