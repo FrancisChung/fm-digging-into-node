@@ -75,7 +75,14 @@ function main() {
 }
 
 async function handleRequest(req, res) {
-    fileServer.serve(req, res);
+    if (req.url == "/get-records") {
+        let  records = await getAllRecords();
+        res.writehead(200, { "Content-Type": "application/json", "cache-control": "no-cache" });
+        res.end(JSON.stringify(records));
+    }
+    else {
+        fileServer.serve(req, res);
+    }
 }
 
 // *************************
