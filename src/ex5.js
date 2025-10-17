@@ -54,6 +54,11 @@ function main() {
 	// console.log(`Listening on http://localhost:${HTTP_PORT}...`);
 }
 
+async function handleRequest(req, res) {
+    res.writeHead(200, {"Content-Type": "text/plain"});
+    res.end("Hello World!");
+}
+
 // *************************
 // NOTE: if sqlite3 is not working for you,
 //   comment this version out
