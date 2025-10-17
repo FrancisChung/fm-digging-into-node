@@ -4,10 +4,10 @@
 
 var util = require("util");
 var path = require("path");
-// var http = require("http");
+var http = require("http");
 
 var sqlite3 = require("sqlite3");
-// var staticAlias = require("node-static-alias");
+var staticAlias = require("node-static-alias");
 
 
 // ************************************
@@ -42,7 +42,7 @@ var SQL3 = {
 // 	],
 // });
 
-// var httpserv = http.createServer(handleRequest);
+var httpserv = http.createServer(handleRequest);
 
 main();
 
@@ -50,6 +50,7 @@ main();
 // ************************************
 
 function main() {
+    httpserv.listen(HTTP_PORT);
 	// console.log(`Listening on http://localhost:${HTTP_PORT}...`);
 }
 
