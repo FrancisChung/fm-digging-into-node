@@ -51,7 +51,7 @@ main();
 
 function main() {
     httpserv.listen(HTTP_PORT);
-	// console.log(`Listening on http://localhost:${HTTP_PORT}...`);
+	console.log(`Listening on http://localhost:${HTTP_PORT}...`);
 }
 
 async function handleRequest(req, res) {
