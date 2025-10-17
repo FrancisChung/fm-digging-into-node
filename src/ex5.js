@@ -77,7 +77,7 @@ function main() {
 async function handleRequest(req, res) {
     if (req.url == "/get-records") {
         let  records = await getAllRecords();
-        res.writehead(200, { "Content-Type": "application/json", "cache-control": "no-cache" });
+        res.writeHead(200, { "Content-Type": "application/json", "cache-control": "no-cache" });
         res.end(JSON.stringify(records));
     }
     else {
