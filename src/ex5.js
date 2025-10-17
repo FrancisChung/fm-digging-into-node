@@ -55,8 +55,14 @@ function main() {
 }
 
 async function handleRequest(req, res) {
-    res.writeHead(200, {"Content-Type": "text/plain"});
-    res.end("Hello World!");
+    if (req.url == "/hello") {
+        res.writeHead(200, {"Content-Type": "text/plain"});
+        res.end("Hello World!");
+    }
+    else {
+        res.writeHead(404, "url needs to be /hello")
+        res.end();
+    }
 }
 
 // *************************
