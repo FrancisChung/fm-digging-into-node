@@ -39,6 +39,26 @@ var fileServer = new staticAlias.Server(WEB_PATH,{
 	cache: 100,
 	serverInfo: "Node Workshop: ex5",
 	alias: [
+        {
+            match: /^\/(?:index\/?)?(?:[?#].*$)?$/,
+            serve: "index.html",
+            force: true,
+        },
+        {
+            match: /^\/js\/.+$/,
+            serve: "<% absPath %>",
+            force: true,
+        },
+        {
+            match: /^\/(?:[\w\d]+)(?:[\/?#].*$)?$/,
+            serve: function onMatch(params) {
+                return `${params.basename}.html`;
+            },
+        },
+        {
+            match: /[^]/,
+            serve: "404.html",
+        },
 	],
 });
 
@@ -55,14 +75,7 @@ function main() {
 }
 
 async function handleRequest(req, res) {
-    if (req.url == "/hello") {
-        res.writeHead(200, {"Content-Type": "text/plain"});
-        res.end("Hello World!");
-    }
-    else {
-        res.writeHead(404, "url needs to be /hello")
-        res.end();
-    }
+    fileServer.serve(req, res);
 }
 
 // *************************
