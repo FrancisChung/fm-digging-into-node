@@ -35,12 +35,12 @@ var SQL3 = {
 	exec: util.promisify(myDB.exec.bind(myDB)),
 };
 
-// var fileServer = new staticAlias.Server(WEB_PATH,{
-// 	cache: 100,
-// 	serverInfo: "Node Workshop: ex5",
-// 	alias: [
-// 	],
-// });
+var fileServer = new staticAlias.Server(WEB_PATH,{
+	cache: 100,
+	serverInfo: "Node Workshop: ex5",
+	alias: [
+	],
+});
 
 var httpserv = http.createServer(handleRequest);
 
