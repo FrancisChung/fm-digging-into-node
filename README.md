@@ -9,3 +9,5 @@ Node.js has taken the JavaScript world by storm, but where do you start when all
 
 1. use src/
 2. sqlite3 errors - npm install sqlite3@latest
+3. For exercise 7, make sure you have node running in the background (i.e node ex6.js)
+4. To test a process's exit code, you can chain another command behind it. <br />If it returns 0, it should run the following command. <br /> e.g node ex7-child.js && ls -la
