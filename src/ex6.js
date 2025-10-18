@@ -62,6 +62,25 @@ function defineRoutes() {
         res.end(JSON.stringify(records));
     });
 
+    app.use(function (req,res,next){
+        if (/^\/(?:index\/?)?(?:[?#].*$)?$/.test(req.url)) {
+            req.url = "index.html";
+        }
+        else if (/^\/js\/.+$/.test(req.url)) {
+            next();
+            return;
+        }
+        else if (/^\/(?:[\w\d]+)(?:[\/?#].*$)?$/.test(req.url)) {
+            let [, basename] = req.url.match("/^\/(?:[\w\d]+)(?:[\/?#].*$)");
+            req.url = `${basename}.html`
+        }
+        else {
+            req.url = "/404.html";
+        }
+
+        next();
+    });
+
     app.use(express.static(WEB_PATH, {
         maxAge: 100,
         setHeaders: function setHeaders(res) {
