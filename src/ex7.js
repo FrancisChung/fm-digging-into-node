@@ -3,7 +3,7 @@
 "use strict";
 
 var util = require("util");
-/var childProc = require("child_process");
+var childProc = require("child_process");
 
 
 // ************************************
