@@ -53,6 +53,21 @@ function main() {
 }
 
 function defineRoutes() {
+    app.get("/get-records", async function (req, res) {
+        var records = await getAllRecords();
+        res.writeHead(200, {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache"
+        });
+        res.end(JSON.stringify(records));
+    });
+
+    app.use(express.static(WEB_PATH, {
+        maxAge: 100,
+        setHeaders: function setHeaders(res) {
+            res.setHeader("Server", "Node Workshop: Ex 6");
+        }
+    }));
     //
     // Hints:
     //
