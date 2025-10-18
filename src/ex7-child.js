@@ -19,12 +19,15 @@ async function main() {
         if (res && res.ok) {
             let records = await res.json();
             if (records && records.length > 0) {
+                console.log("Records returned", records.length);
                 process.exitCode = 0;
                 return;
             }
         }
     }
-    catch (err) {}
+    catch (err) {
+        console.error(err);
+        process.exitCode = 1;
+    }
 
-    process.exitCode = 1;
 }
