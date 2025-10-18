@@ -6,8 +6,10 @@ var util = require("util");
 var path = require("path");
 var http = require("http");
 
-// var express = require("express");
+var express = require("express");
 var sqlite3 = require("sqlite3");
+
+var app = express();
 
 
 // ************************************
@@ -45,32 +47,36 @@ main();
 
 function main() {
 	// TODO: define routes
-	//
-	// Hints:
-	//
-	// {
-	// 	match: /^\/(?:index\/?)?(?:[?#].*$)?$/,
-	// 	serve: "index.html",
-	// 	force: true,
-	// },
-	// {
-	// 	match: /^\/js\/.+$/,
-	// 	serve: "<% absPath %>",
-	// 	force: true,
-	// },
-	// {
-	// 	match: /^\/(?:[\w\d]+)(?:[\/?#].*$)?$/,
-	// 	serve: function onMatch(params) {
-	// 		return `${params.basename}.html`;
-	// 	},
-	// },
-	// {
-	// 	match: /[^]/,
-	// 	serve: "404.html",
-	// },
-
+    defineRoutes();
 	httpserv.listen(HTTP_PORT);
 	console.log(`Listening on http://localhost:${HTTP_PORT}...`);
+}
+
+function defineRoutes() {
+    //
+    // Hints:
+    //
+    // {
+    // 	match: /^\/(?:index\/?)?(?:[?#].*$)?$/,
+    // 	serve: "index.html",
+    // 	force: true,
+    // },
+    // {
+    // 	match: /^\/js\/.+$/,
+    // 	serve: "<% absPath %>",
+    // 	force: true,
+    // },
+    // {
+    // 	match: /^\/(?:[\w\d]+)(?:[\/?#].*$)?$/,
+    // 	serve: function onMatch(params) {
+    // 		return `${params.basename}.html`;
+    // 	},
+    // },
+    // {
+    // 	match: /[^]/,
+    // 	serve: "404.html",
+    // },
+
 }
 
 // *************************
